@@ -92,7 +92,7 @@ public class DictionaryController implements TimeOutObserver {
 
             //set timeout
             TimeOutQuestion toq = new TimeOutQuestion(TIMEOUT);
-            //toq.registerTimeOutObserver(this);
+            toq.registerTimeOutObserver(this);
             Thread t = new Thread(toq);
             t.start();
             timeIsOut = false;
@@ -194,7 +194,6 @@ public class DictionaryController implements TimeOutObserver {
     }
 
     private void initDictionaryFromFile(String filename) {
-
         try {
             String line;
             String[] words = new String[2];

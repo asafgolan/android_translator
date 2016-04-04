@@ -20,6 +20,10 @@ public class User implements Serializable {
         this.trackRecord = new TrackRecord();
     }
 
+    public String getUserName(){
+        return this.name;
+    }
+
     public void addQuiz(Quiz q) {
         q.setCompleted(System.currentTimeMillis());
         history.add(q);
