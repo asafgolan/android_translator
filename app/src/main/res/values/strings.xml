@@ -2,5 +2,6 @@
     <string name="app_name">Translator</string>
     <string name="action_settings">User</string>
     <string name="submit">Submit</string>
+    <string name="saveDictionary">Save Dictionary</string>
 
 </resources>

@@ -12,7 +12,7 @@ public class QuizItem {
     private boolean solved;
 
     public QuizItem(String question) {
-        System.out.println("FROM QUIZ CONSTRUCTOR");
+        //System.out.println("FROM QUIZ CONSTRUCTOR");
         this.question = question;
         this.solved = false;
     }

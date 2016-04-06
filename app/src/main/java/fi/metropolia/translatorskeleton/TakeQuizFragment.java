@@ -6,15 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import fi.metropolia.translatorskeleton.model.MyModelRoot;
-import fi.metropolia.translatorskeleton.model.Quiz;
-import fi.metropolia.translatorskeleton.model.RandomQuiz;
-import fi.metropolia.translatorskeleton.model.User;
-import fi.metropolia.translatorskeleton.model.UserData;
-
 
 public class TakeQuizFragment extends Fragment {
-    UserData u = MyModelRoot.getInstance().getUserData();
+
 
     public TakeQuizFragment() {
         // Required empty public constructor
@@ -23,7 +17,6 @@ public class TakeQuizFragment extends Fragment {
 
         super.onStart();
         System.out.println("FROM ONSTART FRAGMENT");
-        ((MainActivity)getActivity()).setFragmentisReady(true);
     }
 
     @Override

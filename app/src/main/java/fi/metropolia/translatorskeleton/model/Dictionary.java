@@ -4,6 +4,9 @@ package fi.metropolia.translatorskeleton.model;
  * Created by petrive on 23.3.16.
  */
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -55,6 +58,27 @@ public class Dictionary implements Serializable {
 
     public Set<String> getKeys() {
         return lang1map.keySet();
+    }
+
+    public JSONObject JsonObj(){
+        JSONObject data = new JSONObject();
+
+        for(String fromWord: lang1map.keySet()) {
+            String s = "";
+            //s += fromWord + ":";
+            for(String toWord: lang1map.get(fromWord)) {
+                //System.out.println("here");
+                s += " " + toWord;
+            }
+            try {
+                data.put(fromWord,s );
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //s += "\n" + "}";
+        }
+
+        return data;
     }
 
     @Override
