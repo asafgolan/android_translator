@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text = "add words"/>
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="key"
+        android:id="@+id/key"
+        android:layout_gravity="right"
+       />
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="value"
+        android:id="@+id/value"
+        android:layout_gravity="right"
+        android:layout_below="@id/key"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:id="@+id/addWordPair"
+        android:layout_gravity="center_horizontal"
+        android:onClick="addWordPair"
+        android:layout_below="@+id/value"
+        android:layout_alignRight="@+id/deleteWordPair"
+        android:layout_alignEnd="@+id/deleteWordPair" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:text="delete words"
+        android:id="@+id/deleteHead"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addWordPair"/>
+    <EditText
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Word to delete"
+        android:id="@+id/deleteKey"
+        android:layout_below="@id/deleteHead"
+        android:layout_gravity="right"
+       />
+    <EditText
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Word to delete"
+        android:id="@+id/deleteKeyVal"
+        android:layout_below="@id/deleteKey"
+        android:layout_gravity="right"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submitDeletion"
+        android:id="@+id/deleteWordPair"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/deleteKeyVal"
+        android:onClick="deleteWordPair"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/saveDictionary"
+        android:id="@+id/saveAic"
+        android:layout_below="@id/deleteWordPair"
+        android:layout_gravity="center_horizontal"
+        android:onClick="saveDicToMongoDB"
+        />
+
+
+
+
+
+
+</RelativeLayout>
