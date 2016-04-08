@@ -11,7 +11,8 @@
         android:layout_marginTop="65dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:onClick="doRandQuiz"/>
+        android:tag="1"
+        android:onClick="doQuiz"/>
 
     <Button
         android:layout_width="120dp"
@@ -21,14 +22,18 @@
         android:layout_below="@+id/randquiz"
         android:layout_alignLeft="@+id/randquiz"
         android:layout_alignStart="@+id/randquiz"
-        android:onClick="doHardQuiz"/>
+        android:tag="2"
+        android:onClick="doQuiz"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/saveDictionary"
-        android:id="@+id/saveAic"
-        android:layout_gravity="center_horizontal"
-        android:onClick="saveDicToMongoDB"
-        />
+        android:text="Edit dictionary"
+        android:id="@+id/EditDic"
+        android:layout_marginTop="65dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="changeToEditFragment"/>
+
 
 </LinearLayout>

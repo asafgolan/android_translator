@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Translator</string>
     <string name="action_settings">User</string>
-    <string name="submit">Submit</string>
+    <string name="submit">Submit Addition</string>
     <string name="saveDictionary">Save Dictionary</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="submitDeletion">submit deletion</string>
+    <string name="submitAnswer">submit answer</string>
 
 </resources>

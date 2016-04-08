@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -37,6 +39,7 @@ import fi.metropolia.translatorskeleton.model.Quiz;
 import fi.metropolia.translatorskeleton.model.QuizItem;
 import fi.metropolia.translatorskeleton.model.RandomQuiz;
 import fi.metropolia.translatorskeleton.model.TimeOutQuestion;
+import fi.metropolia.translatorskeleton.model.TrackRecord;
 import fi.metropolia.translatorskeleton.model.UserData;
 import fi.metropolia.translatorskeleton.model.MyModelRoot;
 import fi.metropolia.translatorskeleton.model.User;
@@ -58,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
     private AssetsPropertyReader assetsPropertyReader;
     private Context context;
     private Properties p;
-    private String DBPath ="urDBAPIpath";
-
+    private Dictionary dictEngFin;
+    private Dictionary dictFinEng;
+    private String DBPath;
 
 
     public void parse(JSONObject json ) throws JSONException{
@@ -69,11 +73,10 @@ public class MainActivity extends AppCompatActivity {
             String val = null;
             val = json.getString(key);
             Trans_values  = Arrays.asList(val.split(" "));
-            if(val != null && !key.toString().contains("$")){
-                for(int i =0; i < Trans_values.size(); i++){
-                    if(!Trans_values.get(i).contains("$")){
-                        u.getDictionary("engfin").addPair(key, Trans_values.get(i).trim());
-                    }
+            for(int i =0; i < Trans_values.size(); i++){
+                if(!Trans_values.get(i).contains("$")){
+                        dictEngFin.addPair(key, Trans_values.get(i).trim());
+                        dictFinEng.addPair(Trans_values.get(i).trim(),key);
                 }
             }
         }
@@ -100,9 +103,57 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    //addWordPair;
+  public void addWordPair(View view){
+        String fromWord;
+        String toWord;
+        TextView keyTv =(TextView)findViewById(R.id.key);
+        fromWord = String.valueOf(keyTv.getText());
+        TextView valTv =(TextView)findViewById(R.id.value);
+        toWord = String.valueOf(valTv.getText());
+      if (fromWord.matches("[a-zA-Z ]+")) {
+            if (toWord.matches("[\\p{L} ]+")) {
+                dictEngFin.addPair(fromWord, toWord);
+                dictFinEng.addPair(toWord, fromWord);
+            } else {
+                System.out.println("Invalid input");
+            }
+        } else {
+            System.out.println("Invalid input.");
+        }
+      System.out.println("FROM ADD PAIR");
+      System.out.println(dictEngFin.getKeys());
+    }
+
+    public void deleteWordPair(View view){
+        //System.out.print(dictEngFin.getLang1() + ": ");
+        String keyWord;
+        String keyVal;
+        TextView keyTv =(TextView)findViewById(R.id.deleteKey);
+        keyWord = String.valueOf(keyTv.getText());
+        TextView valTv =(TextView)findViewById(R.id.deleteKeyVal);
+        keyVal = String.valueOf(valTv.getText());
+        if (keyWord.matches("[a-zA-Z ]+")) {
+            if (keyVal.matches("[\\p{L} ]+")) {
+                dictEngFin.deletePair(keyWord, keyVal);
+                dictFinEng.deletePair(keyVal, keyWord);
+            } else {
+                System.out.println("Invalid input");
+            }
+        } else {
+            System.out.println("Invalid input.");
+        }
+        System.out.println("FROM DELETE");
+        System.out.println(dictEngFin.getKeys());
+
+    }
+
+
+    //Save user;
+    //getUser;
 
     private String saveContent(String myurl) throws IOException {
-        Dictionary currDic = u.getDictionary("engfin");
+        Dictionary currDic = dictEngFin;
         currDic.addPair("to look", "hae");
         URL url = new URL(myurl);
         HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection();
@@ -179,22 +230,35 @@ public class MainActivity extends AppCompatActivity {
 
     public void askQuestion (){
         if(itemCounter <= currQuiz.getQuizLength()) {
+                System.out.println("");
                 QuizItem item = currQuiz.getItem(itemCounter);
                 String question = (itemCounter + 1) + ". " + item.getQuestion() + "?";
                 questionTv = (TextView) findViewById(R.id.question);
                 questionTv.setText(question);
         }else{
 
-            user.addQuiz(currQuiz);
+
         }
     }
 
-    public void finishQuiz(){
+    public void finishQuiz(int numOfCorrectAnswers){
+        itemCounter = 0;
         user.addQuiz(currQuiz);
         System.out.println("FINISHED QUIZ");
+        //TrackRecord tr= new TrackRecord();
+        System.out.println(user.getTrackRecord());
+
+         //System.out.println(TrackRecord.getTotals().put(dictEngFin,));
+
+
+
+        System.out.println(user.getUserName());
+        System.out.println(user);
         Context context = getApplicationContext();
-        CharSequence text = "Finished the quiz.";
-        int duration = Toast.LENGTH_SHORT;
+
+        CharSequence text = "Finished the quiz.\n "+
+                            "with " +numOfCorrectAnswers ;
+        int duration = Toast.LENGTH_LONG;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
         //show original fragment
@@ -204,31 +268,70 @@ public class MainActivity extends AppCompatActivity {
     public void verifyAnswer(View view){
         EditText answerET = (EditText)findViewById(R.id.answer);
         String answer = answerET.getText().toString();
+        int correctAnswerCounter = 0;
         if (currQuiz.checkAnswer(itemCounter, answer)) {
+            correctAnswerCounter++;
             System.out.println("Correct answer!");
         }else{
+            CharSequence text = "You did not get it right this time.";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
             System.out.println("You did not get it right this time.");
         }
         itemCounter++;
         if(itemCounter < currQuiz.getQuizLength()){
             askQuestion();
         }else{
-            finishQuiz();
+            finishQuiz(correctAnswerCounter);
         }
     }
 
-    public void doRandQuiz(View view){
+    public void doQuiz(View view){
+        if(itemCounter == 0){
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.listcontainer, new TakeQuizFragment());
+            ft.commit();
+            //makes transaction sync
+            fm.executePendingTransactions();
+            //set current quiz
+            System.out.println("DO QUIZ");
+            System.out.println(user.getTrackRecord().getWordCount());
+            if(view.getTag().equals("1") || user.getTrackRecord().toString() == ""){
+                currQuiz = new RandomQuiz(dictEngFin.getKeys().size(), dictEngFin);
+
+            }else{
+                currQuiz =new HardQuiz(5,dictEngFin,user.getTrackRecord());
+            }
+            askQuestion();
+        }
+        else{
+            CharSequence text = "first finish the ongoing quiz first";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+
+    }
+
+    public void changeToEditFragment(View view){
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.listcontainer, new TakeQuizFragment());
+        ft.replace(R.id.listcontainer, new EditDicFragment());
         ft.commit();
-        //makes transaction sync
-        fm.executePendingTransactions();
-        //set user and current quiz
-        currQuiz = new RandomQuiz((data.length() - 1), MyModelRoot.getInstance().getUserData().getDictionary("engfin"));
-        this.user =  u.getUser();
-        askQuestion();
     }
+
+    public void callGoToDefaultScreen(View view){
+        goToDefaultScreen();
+    }
+    public void goToDefaultScreen(){
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.listcontainer, new ChooseQuizFragment());
+        ft.commit();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,23 +340,28 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         assetsPropertyReader = new AssetsPropertyReader(context);
         p = assetsPropertyReader.getProperties("app.properties");
-        //DBPath = p.get("DBPath").toString();
-        System.out.println(DBPath);
+        DBPath = p.get("DBPath").toString();
         //getContent
+
         new initDicFromMongoDBTask().execute(DBPath);
+
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.add(R.id.listcontainer, new ChooseQuizFragment());
         ft.commit();
 
-
         u.setUser(new User("Myself"));
-        u.addDictionary("fineng", new Dictionary("fin", "eng"));
-        u.addDictionary("engfin", new Dictionary("eng", "fin"));
+        this.user =  u.getUser();
+        u.addDictionary("FinEng", new Dictionary("fin", "eng"));
+        u.addDictionary("EngFin", new Dictionary("eng", "fin"));
+        dictEngFin =u.getDictionary("EngFin");
+        dictFinEng = u.getDictionary("FinEng");
+        goToDefaultScreen();
+
     }
 
     public void saveDicToMongoDB(View view){
-
+        System.out.println("From Save");
         new saveDicToMongoDBTask().execute(DBPath);
 
     }
@@ -262,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         //add menu Item user with current user name
         menu.add(u.getUser().getUserName());
-        menu.add("records");
+        menu.add("backToMain");
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -280,15 +388,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        ///if (id == R.id.action_settings) {
-         //   return true;
-        //}
-
+        if(item.getTitle() == "backToMain"){
+            goToDefaultScreen();
+        }
         return super.onOptionsItemSelected(item);
     }
 }

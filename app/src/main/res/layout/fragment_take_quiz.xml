@@ -24,7 +24,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/submit"
+        android:text="@string/submitAnswer"
         android:id="@+id/submitAnswer"
         android:layout_gravity="center_horizontal"
         android:layout_below="@id/answer"

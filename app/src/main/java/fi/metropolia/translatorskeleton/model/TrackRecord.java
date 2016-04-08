@@ -18,6 +18,10 @@ public class TrackRecord implements Serializable {
         this.totals = new HashMap<>();
     }
 
+    public  HashMap<Dictionary, HashMap<String, Integer>>  getTotals(){
+        return totals;
+    }
+
     public void add(Quiz q) {
         for(QuizItem qi: q.getItems()) {
             HashMap<String, Integer> k = totals.get(q.getDictionary());
@@ -74,4 +78,3 @@ public class TrackRecord implements Serializable {
         return negatives;
     }
 }
-
