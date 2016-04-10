@@ -3,6 +3,9 @@ package fi.metropolia.translatorskeleton.model;
 /**
  * Created by petrive on 23.3.16.
  */
+
+import android.content.Context;
+
 /**
  *
  * @author petrive

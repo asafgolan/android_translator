@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id ="@+id/takequizfrg"
     android:clipChildren="false">
 
     <TextView
@@ -20,7 +21,6 @@
         android:layout_gravity="right"
         android:layout_below="@id/question"
         />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,7 +31,15 @@
         android:onClick="verifyAnswer"
         />
 
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next Word"
+        android:id="@+id/nextword"
+        android:layout_below="@+id/submitAnswer"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="goToNextQuestion"/>
 
 
 </RelativeLayout>

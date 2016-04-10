@@ -36,6 +36,7 @@ public class Quiz {
 
     public boolean checkAnswer(int index, String answer) {
         boolean gotIt = dictionary.keyHas(items.get(index).getQuestion(), answer);
+
         items.get(index).setSolved(gotIt);
         return gotIt;
     }

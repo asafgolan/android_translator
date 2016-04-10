@@ -9,6 +9,7 @@ package fi.metropolia.translatorskeleton.model;
  * @author petrive
  */
 public interface TimeOutObserver {
+
     public void timeout();
 }
 

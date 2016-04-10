@@ -92,7 +92,8 @@ public class DictionaryController implements TimeOutObserver {
 
             //set timeout
             TimeOutQuestion toq = new TimeOutQuestion(TIMEOUT);
-            toq.registerTimeOutObserver(this);
+            System.out.println(this);
+            //toq.registerTimeOutObserver(this);
             Thread t = new Thread(toq);
             t.start();
             timeIsOut = false;

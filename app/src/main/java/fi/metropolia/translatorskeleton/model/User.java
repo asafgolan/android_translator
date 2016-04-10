@@ -13,11 +13,15 @@ import java.util.ArrayList;
 public class User implements Serializable {
     private final String name;
     private transient final ArrayList<Quiz> history = new ArrayList<>();
-    private final TrackRecord trackRecord;
+    private  TrackRecord trackRecord;
 
     public User(String name) {
         this.name = name;
         this.trackRecord = new TrackRecord();
+    }
+
+    public void  setTrackRecord(TrackRecord tr){
+        this.trackRecord = tr;
     }
 
     public String getUserName(){

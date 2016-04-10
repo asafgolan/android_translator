@@ -34,8 +34,10 @@ public class TrackRecord implements Serializable {
             }
 
             if (qi.isSolved()) {
+                score =0;
                 score++;
             } else {
+                score = 0;
                 score--;
             }
             k.put(qi.getQuestion(), score);
