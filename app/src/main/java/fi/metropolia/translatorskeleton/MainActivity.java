@@ -85,19 +85,23 @@ public class MainActivity extends AppCompatActivity implements TimeOutObserver {
 
 
     public void parse(JSONObject json ) throws JSONException{
+        System.out.println("HERER");
         Iterator<String> keys = json.keys();
         while(keys.hasNext()){
+
             String key = keys.next();
             String val = null;
             val = json.getString(key);
             Trans_values  = Arrays.asList(val.split(" "));
             for(int i =0; i < Trans_values.size(); i++){
-                if(!Trans_values.get(i).contains("$")){
+                if(!Trans_values.get(i).contains("$") ){
+                    System.out.println(Trans_values.get(i));
                         dictEngFin.addPair(key, Trans_values.get(i).trim());
                         dictFinEng.addPair(Trans_values.get(i).trim(),key);
                 }
             }
         }
+        System.out.println(dictEngFin);
     }
 
     private String saveUserContent(String myurl) throws IOException, JSONException {
@@ -335,7 +339,12 @@ public class MainActivity extends AppCompatActivity implements TimeOutObserver {
 
     public void askQuestion (){
         if(itemCounter <= currQuiz.getQuizLength()) {
+            //nasty hack
+            System.out.println("WWWWWW");
             QuizItem item = currQuiz.getItem(itemCounter);
+            //System.out.println(dictEngFin.getLang1map().get(item.getQuestion()).toString());
+            //System.out.println(currQuiz.getItem(itemCounter);
+            //item = currQuiz.getItem(itemCounter);
             String question = (itemCounter + 1) + ". " + item.getQuestion() + "?";
             questionTv = (TextView) findViewById(R.id.question);
             questionTv.setText(question);

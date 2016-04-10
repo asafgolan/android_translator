@@ -21,6 +21,10 @@ public class Dictionary implements Serializable {
     private final String lang2;
     private final TreeMap<String, HashSet<String>> lang1map;
 
+    public TreeMap<String, HashSet<String>> getLang1map() {
+        return lang1map;
+    }
+
     public Dictionary(String from, String to) {
         this.lang1 = from;
         this.lang2 = to;
@@ -36,12 +40,17 @@ public class Dictionary implements Serializable {
     }
 
     public void addPair(String fromWord, String toWord) {
-        HashSet<String> toWords = lang1map.get(fromWord);
+        HashSet<String> toWords = lang1map.get(fromWord.trim());
         if(toWords == null) {
             toWords = new HashSet<>();
         }
-        toWords.add(toWord);
-        lang1map.put(fromWord, toWords);
+        System.out.println("DICTIONARY CLASS");
+        System.out.println(toWord.toString().trim().equals("") + " HEY HEY HYE");
+        if(!toWord.trim().equals("")){
+            toWords.add(toWord);
+            lang1map.put(fromWord, toWords);
+        }
+
     }
 
     public void deletePair(String word1, String word2) {
